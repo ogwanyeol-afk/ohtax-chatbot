@@ -42,6 +42,7 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--nav
 .bubble strong{font-weight:600;color:var(--navy)}
 .row.user .bubble strong{color:var(--gold-light)}
 .msg-time{font-size:10px;color:var(--gray-400);padding:0 3px}
+.search-badge{display:inline-block;font-size:10px;color:#3478f6;background:#eef3ff;padding:2px 8px;border-radius:10px;margin-left:5px;vertical-align:middle;font-weight:500}
 .disclaimer{background:#fffbea;border:1px solid #f0d060;border-radius:10px;padding:9px 12px;font-size:11.5px;color:#7a6010;line-height:1.55;margin-top:6px}
 .typing{display:none}
 .typing.on{display:flex;gap:9px;align-items:flex-end;animation:popUp .25s ease}
@@ -65,101 +66,146 @@ html,body{height:100%;font-family:'Noto Sans KR',sans-serif;background:var(--nav
 </head>
 <body>
 <div class="app">
-<div class="header">
-<div class="hd-logo">🏛</div>
-<div class="hd-info">
-<div class="hd-title">센텀세무회계 AI 세무상담</div>
-<div class="hd-sub">CENTUM TAX ACCOUNTING · 화성시</div>
-</div>
-<div class="hd-badge"><div class="hd-dot"></div><span>AI 운영중</span></div>
-</div>
-<div class="chips">
-<div class="chip" onclick="quickSend('종합소득세 신고 방법을 알려주세요')">📋 종합소득세</div>
-<div class="chip" onclick="quickSend('부가세 신고 기간이 언제인가요?')">🗓 부가세</div>
-<div class="chip" onclick="quickSend('간이과세자와 일반과세자 차이가 무엇인가요?')">⚖️ 과세유형</div>
-<div class="chip" onclick="quickSend('직원 4대보험 가입 방법을 알려주세요')">👥 4대보험</div>
-<div class="chip" onclick="quickSend('세금계산서 발행 방법을 알려주세요')">🧾 세금계산서</div>
-<div class="chip" onclick="quickSend('사업자등록 방법이 궁금합니다')">🏢 사업자등록</div>
-<div class="chip" onclick="quickSend('근로장려금 신청 방법을 알려주세요')">💰 근로장려금</div>
-</div>
-<div class="chat" id="chat">
-<div class="dateline">오늘</div>
-<div class="row ai">
-<div class="avatar">🏛</div>
-<div class="msg-wrap">
-<div class="msg-name">센텀 AI 세무상담사</div>
-<div class="bubble">안녕하세요! <strong>센텀세무회계</strong> AI 세무상담 챗봇입니다. 😊<br><br>세금 신고·납부, 사업자등록, 4대보험 등 <strong>세무·회계 관련 질문</strong>을 무엇이든 물어보세요!</div>
-<div class="disclaimer">⚠️ AI 답변은 일반적인 정보 제공 목적이며 개인 상황에 따라 다를 수 있습니다. 정확한 상담은 <strong>센텀세무회계 031-890-8082</strong>로 문의해 주세요.</div>
-<div class="msg-time" id="wt"></div>
-</div>
-</div>
-<div class="typing" id="typing">
-<div class="avatar">🏛</div>
-<div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>
-</div>
-</div>
-<div class="input-bar">
-<div class="input-box">
-<textarea id="inp" placeholder="세무 관련 질문을 입력하세요…" rows="1" onkeydown="onKey(event)" oninput="resize(this)"></textarea>
-</div>
-<button class="send" id="sendBtn" onclick="send()">
-<svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-</button>
-</div>
-<div class="footer">센텀세무회계 · 경기도 화성시 &nbsp;|&nbsp; <a href="tel:031-890-8082">📞 031-890-8082</a> &nbsp;|&nbsp; <a href="https://ogwanyeol-afk.github.io/Wealthpartners/">계산기 바로가기</a></div>
+  <div class="header">
+    <div class="hd-logo">🏛</div>
+    <div class="hd-info">
+      <div class="hd-title">센텀세무회계 AI 세무상담</div>
+      <div class="hd-sub">CENTUM TAX ACCOUNTING · 화성시</div>
+    </div>
+    <div class="hd-badge"><div class="hd-dot"></div><span>AI 운영중</span></div>
+  </div>
+  <div class="chips">
+    <div class="chip" onclick="quickSend('종합소득세 신고 방법을 알려주세요')">📋 종합소득세</div>
+    <div class="chip" onclick="quickSend('부가세 신고 기간이 언제인가요?')">🗓 부가세</div>
+    <div class="chip" onclick="quickSend('간이과세자와 일반과세자 차이가 무엇인가요?')">⚖️ 과세유형</div>
+    <div class="chip" onclick="quickSend('직원 4대보험 가입 방법을 알려주세요')">👥 4대보험</div>
+    <div class="chip" onclick="quickSend('세금계산서 발행 방법을 알려주세요')">🧾 세금계산서</div>
+    <div class="chip" onclick="quickSend('사업자등록 방법이 궁금합니다')">🏢 사업자등록</div>
+    <div class="chip" onclick="quickSend('근로장려금 신청 방법을 알려주세요')">💰 근로장려금</div>
+  </div>
+  <div class="chat" id="chat">
+    <div class="dateline">오늘</div>
+    <div class="row ai">
+      <div class="avatar">🏛</div>
+      <div class="msg-wrap">
+        <div class="msg-name">센텀 AI 세무상담사</div>
+        <div class="bubble">안녕하세요! <strong>센텀세무회계</strong> AI 세무상담 챗봇입니다. 😊<br><br>세금 신고·납부, 사업자등록, 4대보험 등 <strong>세무·회계 관련 질문</strong>을 무엇이든 물어보세요!</div>
+        <div class="disclaimer">⚠️ AI 답변은 일반적인 정보 제공 목적이며 개인 상황에 따라 다를 수 있습니다. 정확한 상담은 <strong>센텀세무회계 031-890-8082</strong>로 문의해 주세요.</div>
+        <div class="msg-time" id="wt"></div>
+      </div>
+    </div>
+    <div class="typing" id="typing">
+      <div class="avatar">🏛</div>
+      <div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>
+    </div>
+  </div>
+  <div class="input-bar">
+    <div class="input-box">
+      <textarea id="inp" placeholder="세무 관련 질문을 입력하세요…" rows="1" onkeydown="onKey(event)" oninput="resize(this)"></textarea>
+    </div>
+    <button class="send" id="sendBtn" onclick="send()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+    </button>
+  </div>
+  <div class="footer">센텀세무회계 · 경기도 화성시 &nbsp;|&nbsp; <a href="tel:031-890-8082">📞 031-890-8082</a> &nbsp;|&nbsp; <a href="https://ogwanyeol-afk.github.io/Wealthpartners/">계산기 바로가기</a></div>
 </div>
 <script>
-const H=[];
-document.getElementById('wt').textContent=now();
-function now(){const d=new Date();return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')}
-function resize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,96)+'px'}
-function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
-function quickSend(t){document.getElementById('inp').value=t;send()}
-function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function fmt(t){return esc(t).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}
-function addMsg(role,text){
-const chat=document.getElementById('chat');
-const typing=document.getElementById('typing');
-const row=document.createElement('div');
-row.className='row '+role;
-if(role==='ai'){row.innerHTML='<div class="avatar">🏛</div><div class="msg-wrap"><div class="msg-name">센텀 AI 세무상담사</div><div class="bubble">'+fmt(text)+'</div><div class="msg-time">'+now()+'</div></div>';}
-else{row.innerHTML='<div class="msg-wrap"><div class="bubble">'+esc(text).replace(/\n/g,'<br>')+'</div><div class="msg-time">'+now()+'</div></div>';}
-chat.insertBefore(row,typing);
-chat.scrollTop=chat.scrollHeight;
+const H = [];
+document.getElementById('wt').textContent = now();
+
+function now() {
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
 }
-async function send(){
-const inp=document.getElementById('inp');
-const btn=document.getElementById('sendBtn');
-const typing=document.getElementById('typing');
-const chat=document.getElementById('chat');
-const text=inp.value.trim();
-if(!text)return;
-inp.value='';inp.style.height='auto';btn.disabled=true;
-addMsg('user',text);
-H.push({role:'user',content:text});
-typing.classList.add('on');
-chat.scrollTop=chat.scrollHeight;
-try{
-const res=await fetch('/api/chat',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-model:'claude-sonnet-4-20250514',
-max_tokens:1000,
-system:'당신은 센텀세무회계 AI 세무상담 챗봇입니다. 경기도 화성시 소재 공인 세무사 사무실입니다. 세무·회계 질문에 한국어로 친절하고 정확하게 답변하세요. 복잡한 개인 상황은 031-890-8082로 문의 안내하세요.',
-messages:H
-})
-});
-const data=await res.json();
-typing.classList.remove('on');
-const reply=data.content?.[0]?.text??'일시적인 오류가 발생했습니다.';
-H.push({role:'assistant',content:reply});
-addMsg('ai',reply);
-}catch(e){
-typing.classList.remove('on');
-addMsg('ai','네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+function resize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 96) + 'px';
 }
-btn.disabled=false;inp.focus();
+function onKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+}
+function quickSend(t) {
+  document.getElementById('inp').value = t;
+  send();
+}
+function esc(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmt(t) {
+  return esc(t)
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n/g,'<br>');
+}
+function addMsg(role, text, usedSearch) {
+  const chat = document.getElementById('chat');
+  const typing = document.getElementById('typing');
+  const row = document.createElement('div');
+  row.className = 'row ' + role;
+  if (role === 'ai') {
+    const badge = usedSearch
+      ? '<span class="search-badge">🔍 최신 세법 검색</span>'
+      : '';
+    row.innerHTML =
+      '<div class="avatar">🏛</div>' +
+      '<div class="msg-wrap">' +
+        '<div class="msg-name">센텀 AI 세무상담사' + badge + '</div>' +
+        '<div class="bubble">' + fmt(text) + '</div>' +
+        '<div class="msg-time">' + now() + '</div>' +
+      '</div>';
+  } else {
+    row.innerHTML =
+      '<div class="msg-wrap">' +
+        '<div class="bubble">' + esc(text).replace(/\n/g,'<br>') + '</div>' +
+        '<div class="msg-time">' + now() + '</div>' +
+      '</div>';
+  }
+  chat.insertBefore(row, typing);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function send() {
+  const inp = document.getElementById('inp');
+  const btn = document.getElementById('sendBtn');
+  const typing = document.getElementById('typing');
+  const chat = document.getElementById('chat');
+  const text = inp.value.trim();
+  if (!text) return;
+
+  inp.value = '';
+  inp.style.height = 'auto';
+  btn.disabled = true;
+  addMsg('user', text);
+  H.push({ role: 'user', content: text });
+  typing.classList.add('on');
+  chat.scrollTop = chat.scrollHeight;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: H }),
+    });
+    const data = await res.json();
+    typing.classList.remove('on');
+
+    if (data.error) {
+      addMsg('ai', '⚠️ ' + data.error, false);
+      btn.disabled = false;
+      inp.focus();
+      return;
+    }
+
+    const reply = data.content?.[0]?.text ?? '일시적인 오류가 발생했습니다.';
+    H.push({ role: 'assistant', content: reply });
+    addMsg('ai', reply, data.used_web_search);
+
+  } catch (e) {
+    typing.classList.remove('on');
+    addMsg('ai', '네트워크 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.', false);
+  }
+
+  btn.disabled = false;
+  inp.focus();
 }
 </script>
 </body>
