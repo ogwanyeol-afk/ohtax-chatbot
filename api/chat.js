@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 6. 한국어로 친절하고 명확하게 답변하세요.`;
 
   const requestBody = {
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-sonnet-4-5',
     max_tokens: 2048,
     system: systemPrompt,
     messages,
